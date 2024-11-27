@@ -10,7 +10,7 @@ app.use(express.json());
 
 // Register User
 app.post("/register", async (req, res) => {
-  const { firstName, lastName, email, password, marketingEmails, terms } = req.body;
+  const { firstName, lastName, email, password, terms } = req.body;
   try {
     const existingUser = await collection.findOne({ email });
     if (existingUser) {
@@ -26,6 +26,7 @@ app.post("/register", async (req, res) => {
       password: hashedPassword,
       terms,
       roles: [2001], // Default to "User"
+      team: [], // Initialize an empty team array
     });
 
     await newUser.save();
@@ -72,19 +73,21 @@ app.get("/posts", async (req, res) => {
     res.status(500).json({ message: "Error fetching posts", error: err.message });
   }
 });
+
+// Generate Unique ID for Posts
 const generateUniqueId = async () => {
-    let uniqueId;
-    let isUnique = false;
-  
-    while (!isUnique) {
-      uniqueId = Math.floor(1000 + Math.random() * 9000); // Generate random 4-digit number
-      const existingPost = await Post.findOne({ id: uniqueId });
-      if (!existingPost) {
-        isUnique = true; // Ensure the ID is unique
-      }
+  let uniqueId;
+  let isUnique = false;
+  while (!isUnique) {
+    uniqueId = Math.floor(1000 + Math.random() * 9000); // Generate random 4-digit number
+    const existingPost = await Post.findOne({ id: uniqueId });
+    if (!existingPost) {
+      isUnique = true; // Ensure the ID is unique
     }
-    return uniqueId;
-  };
+  }
+  return uniqueId;
+};
+
 // Add a New Post (Admin Only)
 app.post("/posts", async (req, res) => {
   const { title, description, location, weeklyDays, startDate, endDate, randomDates, createdBy } = req.body;
@@ -116,7 +119,7 @@ app.post("/posts", async (req, res) => {
   }
 });
 
-// Fetch all users
+// Fetch All Users (Admin Dashboard)
 app.get("/admin_dashboard", async (req, res) => {
   try {
     // Fetch users who do not have the admin role (5150)
@@ -130,5 +133,48 @@ app.get("/admin_dashboard", async (req, res) => {
   }
 });
 
-app.listen(8000, () => console.log("Server running on http://localhost:8000"));
+// Join a Team
+app.put("/join-team", async (req, res) => {
+  const { email, postId } = req.body;
 
+  try {
+    // Find the user by email
+    const user = await collection.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Check if the post is already in the user's team
+    if (user.team.includes(postId)) {
+      return res.status(400).json({ message: "You are already part of this team." });
+    }
+
+    // Add the post ID to the user's team
+    user.team.push(postId);
+    await user.save();
+
+    res.status(200).json({ message: "Successfully joined the team." });
+  } catch (error) {
+    console.error("Error updating team:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+});
+app.get("/user/posts", async (req, res) => {
+  const { email } = req.query; // Assume the user's email is passed as a query parameter
+
+  try {
+    const user = await collection.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Fetch posts whose ID is in the user's team array
+    const posts = await Post.find({ id: { $in: user.team } });
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching user's posts", error: err.message });
+  }
+});
+
+// Start the Server
+app.listen(8000, () => console.log("Server running on http://localhost:8000"));

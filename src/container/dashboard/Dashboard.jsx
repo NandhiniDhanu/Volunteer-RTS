@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./dashboard.css";
 import dayjs from 'dayjs';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -8,6 +8,7 @@ import { Cards } from '../../components';
 import { MdAdd } from "react-icons/md";
 import useAuth from "../../hooks/useAuth"; // Import the useAuth hook
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // For making API requests
 
 const Dashboard = () => {
   const { auth } = useAuth(); // Retrieve the authenticated user
@@ -15,14 +16,26 @@ const Dashboard = () => {
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = today.toLocaleDateString(undefined, options);
   const [date, setDate] = useState(dayjs());
+  const [userPosts, setUserPosts] = useState([]); // State for storing user's posts
   const navigate = useNavigate();
 
-  const cardData = [
-    { id: 1, title: "Job Title 1", description: "A job ", date: "10/25/21" },
-    { id: 1, title: "Job Title 2", description: "A job description is a written document that provides a detailed overview of a job role, including its responsibilities, tasks, qualifications, and expectations.", date: "10/26/21" },
-    { id: 1, title: "Job Title 3", description: "A job description is a written document that provides a detailed overview of a job role, including its responsibilities, tasks, qualifications, and expectations.", date: "10/26/21" },
-    { id: 1, title: "Job Title 4", description: "A job description is a written document that provides a detailed overview of a job role, including its responsibilities, tasks, qualifications, and expectations.", date: "10/26/21" },
-  ];
+  useEffect(() => {
+    // Fetch posts associated with the user's team
+    const fetchUserPosts = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/user/posts", {
+          params: { email: auth?.user?.email }, // Pass the user's email
+        });
+        setUserPosts(response.data);
+      } catch (error) {
+        console.error("Error fetching user posts:", error);
+      }
+    };
+
+    if (auth?.user?.email) {
+      fetchUserPosts();
+    }
+  }, [auth?.user?.email]);
 
   const addPost = () => {
     navigate('/posts');
@@ -45,7 +58,8 @@ const Dashboard = () => {
           </div>
         </div>
         <div className='volunteer__container'>
-          <Cards data={cardData} variant="slider" />
+          {/* Pass fetched user posts to Cards */}
+          <Cards data={userPosts} variant="slider" />
         </div>
         <div className='information__container'>
           <div className='tasks__container'></div>

@@ -8,6 +8,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { PickersDay } from "@mui/x-date-pickers/PickersDay";
+import useAuth from "../../hooks/useAuth"; // Hook to get auth context
+import axios from "axios";
 
 const Description = ({ post }) => {
   if (!post) {
@@ -39,6 +41,8 @@ const Description = ({ post }) => {
     : endDate
     ? `Ends on: ${formattedEndDate}`
     : "No date range provided";
+  
+  const { auth } = useAuth(); // Get current user info
 
   const [highlightedDays, setHighlightedDays] = useState([]);
 
@@ -89,7 +93,21 @@ const Description = ({ post }) => {
       />
     );
   };
+  const handleJoinNow = async () => {
+    try {
+      const response = await axios.put("http://localhost:8000/join-team", {
+        email: auth.user.email, // Current user's email
+        postId: post.id, // Current post ID
+      });
 
+      if (response.status === 200) {
+        alert("You have successfully joined the team!");
+      }
+    } catch (error) {
+      console.error("Error joining the team:", error);
+      alert("Failed to join the team. Please try again.");
+    }
+  };
   return (
     <div className="description__container">
       <div className="description__header">
@@ -125,9 +143,12 @@ const Description = ({ post }) => {
       <div className="description__body">
         <p>{description || "No description available."}</p>
       </div>
-      <div className="action__button">
-        <button>Join Now</button>
-      </div>
+        <div className="action__button">
+        {auth?.roles?.includes(2001) && (
+          <button onClick={handleJoinNow}>Join Now</button>
+        )}
+
+        </div>
     </div>
   );
 };

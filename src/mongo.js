@@ -36,6 +36,10 @@ const newSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  team: {
+    type: [String],
+    required: true, 
+  },
   roles: {
     type: [Number], // Array of role IDs
     default: [2001], // Default role is 'User'
