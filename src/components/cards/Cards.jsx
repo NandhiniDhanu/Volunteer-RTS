@@ -22,7 +22,6 @@ const Cards = ({ data = [], variant = "grid", onCardClick }) => {
       }`}
     >
       {variant === "slider" && data.length > 3 ? (
-        // This part is left untouched as it applies to a different page
         <Slider {...settings} className="card__slider">
           {data.map((card, index) => (
             <div key={index} className="card">
