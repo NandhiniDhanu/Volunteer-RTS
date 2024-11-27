@@ -8,14 +8,19 @@
     flex-direction: row;
     font-family: 'Poppins', sans-serif;
   }
-  
+  .posts__header {
+    display: flex; /* Flexbox layout */
+    justify-content: space-between; /* Space between title and button */
+    align-items: center; /* Align items vertically */
+    border-bottom: 1px solid #ddd; /* Optional bottom border */
+  }
   .all__posts {
     flex: 7.5; /* Takes 75% of the width */
     display: flex;
     flex-direction: column; /* Stack posts vertically */
-    gap: 10px;
+    gap: 40px;
     overflow-y: auto; /* Scroll only the posts section */
-    padding-right: 10px; /* Add spacing to the right */
+    padding-right: 20px; /* Add spacing to the right */
   }
   
   .posts__information {
@@ -31,12 +36,35 @@
   
   .posts__title {
     font-size: 2rem;
-    margin-bottom: 1.5rem;
     color: #333;
     text-align: center;
-    padding: 1rem 0;
-    border-bottom: 1px solid #ddd;
+  }
+
+  .addpost__button{
+    width: 50px; /* Button width */
+    height: 50px; /* Button height */
+    border-radius: 50%; /* Makes the button circular */
+    background-color: white;
+    border: 2px solid #ddd; /* Optional subtle border */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+  .addpost__button:hover {
+    transform: scale(1.1); /* Slightly enlarges on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* More prominent shadow on hover */
   }
   
-
+  .add-icon-posts {
+    font-size: 24px; /* Icon size */
+    color: red; /* Icon color */
+    transition: color 0.2s ease-in-out;
+  }
   
+  .addpost__button:hover .add-icon {
+    color: red; /* Lightens the icon color on hover */
+  }
+ 

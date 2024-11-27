@@ -56,7 +56,7 @@ const Cards = ({ data = [], variant = "grid" }) => {
                 <p className='card__description'>{card.description}</p>
               </div>
               <div className='card__footer'>
-                <span className='card__date'>{card.date}</span>
+                <span className='card__date'>{card.formattedDate}</span>
               </div>
             </div>
           ))}

@@ -16,6 +16,7 @@
     "@fullcalendar/react": "^6.1.15",
     "@mui/material": "^6.1.8",
     "@mui/x-date-pickers": "^7.22.3",
+    "@mui/x-date-pickers-pro": "^7.22.3",
     "@syncfusion/ej2-react-calendars": "^27.2.3",
     "@types/react-slick": "^0.23.13",
     "axios": "^1.7.7",
