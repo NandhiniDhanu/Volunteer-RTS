@@ -87,7 +87,7 @@ const generateUniqueId = async () => {
   };
 // Add a New Post (Admin Only)
 app.post("/posts", async (req, res) => {
-  const { title, description, createdBy } = req.body;
+  const { title, description, location, weeklyDays, startDate, endDate, randomDates, createdBy } = req.body;
   try {
     // Check if the user is an admin
     const user = await collection.findOne({ email: createdBy });
@@ -98,11 +98,16 @@ app.post("/posts", async (req, res) => {
     const uniqueId = await generateUniqueId();
 
     const newPost = new Post({
-        title,
-        description,
-        createdBy,
-        id: uniqueId, // Assign the unique ID
-      });
+      title,
+      description,
+      location,
+      weeklyDays,
+      startDate,
+      endDate,
+      randomDates,
+      createdBy,
+      id: uniqueId,
+    });
 
     await newPost.save();
     res.status(201).json({ message: "Post added successfully", post: newPost });
@@ -110,6 +115,7 @@ app.post("/posts", async (req, res) => {
     res.status(500).json({ message: "Error adding post", error: err.message });
   }
 });
+
 // Fetch all users
 app.get("/admin_dashboard", async (req, res) => {
   try {

@@ -11,6 +11,7 @@ const Posts = () => {
   const [posts, setPosts] = useState([]); // Dynamic posts from backend
   const [newPost, setNewPost] = useState({ title: "", description: "" }); // New post state
   const [showAddForm, setShowAddForm] = useState(false); // Toggle form visibility
+  const [selectedPost, setSelectedPost] = useState(null); // Track the selected post
 
   const isAdmin = auth?.roles?.includes(5150);
 
@@ -34,13 +35,17 @@ const Posts = () => {
   
     fetchPosts();
   }, []);
-
+  
+  const handleCardClick = (post) => {
+    setSelectedPost(post); // Set the clicked card as the selected post
+};
   // Handle adding a new post
   const handleAddPost = async (postData) => {
     if (!postData.title || !postData.description) {
       alert("Please fill in all fields.");
       return;
     }
+  
   
     try {
       const response = await axios.post("http://localhost:8000/posts", {
@@ -85,10 +90,10 @@ const Posts = () => {
         />
         )}
 
-        <Cards data={posts} variant="grid" />
+          <Cards data={posts} variant="grid" onCardClick={handleCardClick} />
       </div>
       <div className="posts__information">
-        <Description />
+        <Description post={selectedPost} />
       </div>
     </div>
   );

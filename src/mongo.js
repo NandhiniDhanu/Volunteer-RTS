@@ -51,9 +51,29 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  location: {
+    type: String, // New field
+    required: false,
+  },
+  weeklyDays: {
+    type: [String], // Array of weekdays
+    required: false,
+  },
+  startDate: {
+    type: Date, // Start date
+    required: false,
+  },
+  endDate: {
+    type: Date, // End date
+    required: false,
+  },
+  randomDates: {
+    type: [String], // Array of date strings
+    required: false,
+  },
   date: {
     type: Date,
-    default: Date.now, 
+    default: Date.now,
   },
   createdBy: {
     type: String,
@@ -62,9 +82,10 @@ const postSchema = new mongoose.Schema({
   id: {
     type: String,
     required: true,
-    unique: true
-  }
+    unique: true,
+  },
 });
+
 
 const collection = mongoose.model("collection", newSchema);
 const Post = mongoose.model("Post", postSchema);
