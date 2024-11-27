@@ -1,0 +1,123 @@
+.dashboard-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  
+  .dashboard-header {
+    padding: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .dashboard-header h1 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+
+  }
+  
+  .dashboard-tabs {
+    background-color: white;
+    display: flex;
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
+  
+  .tab-button {
+    padding: 10px 20px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .tab-button.active {
+    border-bottom: 2px solid #ff4a4a;
+    color: #ff4a4a;
+  }
+  
+  .tab-button:hover {
+    color: #ff4a4a;
+  }
+  
+  .members-table {
+    background-color: #fff;
+    border-radius: 10px;
+  }
+  
+  .members-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .members-table th,
+  .members-table td {
+    text-align: left;
+    padding: 10px;
+  }
+  .members-table th{
+    border-bottom: 1px solid #ddd;
+  }
+
+  .members-table th {
+    background-color: white;
+    color: #333;
+  }
+  
+  .members-table tr:hover {
+    background-color: #f9f9f9;
+  }
+  .pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    position: relative;
+  }
+  
+  .pagination-prev {
+    position: absolute;
+    left: 0;
+  }
+  
+  .pagination-next {
+    position: absolute;
+    right: 0;
+  }
+  
+  .pagination-numbers {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+  
+  .pagination-button {
+    padding: 5px 10px;
+    color: #555;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .pagination-button.active-page {
+    background-color: #ff4a4a;
+    color: white;
+  }
+  
+  .pagination-button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
+  
+  .pagination-button:hover:not(:disabled) {
+    background-color: #ff6b6b;
+
+    color: white;
+  }
+  
+  
+  

@@ -1,0 +1,105 @@
+/* General styling for the navbar container */
+.navbar__container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.navbar__style {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  border-radius: 30px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.navbar__logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers the logo horizontally */
+  margin-top: 20px;
+  margin-bottom: 50px; /* Adds space below the logo */
+}
+
+
+.logo {
+  width: 50px;
+  height: auto;
+}
+
+/* Styling for the tabs container */
+.navbar__tabs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  flex-grow: 1;
+}
+
+/* Styling for each individual icon wrapper */
+.Dashboard__icon,
+.job__icon,
+.analytics__icon,
+.mail__icon,
+.setting__icon {
+  position: relative; /* Key for pseudo-element positioning */
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out; /* Smooth scaling and background effect */
+  border-radius: 50%; /* Ensure the hover effect is circular */
+  cursor: pointer;
+}
+
+.Dashboard__icon:hover,
+.job__icon:hover,
+.analytics__icon:hover,
+.mail__icon:hover,
+.setting__icon:hover {
+  background-color: rgba(255, 0, 0, 0.2); /* Light red background */
+  transform: scale(1.2); /* Slight scaling on hover */
+}
+
+/* Styling for the icons themselves */
+.icon {
+  width: 20px; /* Icon size */
+  height: 20px; /* Maintain aspect ratio */
+  transition: transform 0.2s ease-in-out; /* Smooth scaling effect */
+  color: #828282cb; /* Light grey color */
+
+}
+
+.navbar__bottom__Buttons {
+  display: flex;
+  flex-direction: column; /* Arrange buttons vertically */
+  align-items: center;
+  gap: 25px; /* Space between the user and logout icons */
+  margin-top: auto; /* Push the buttons to the bottom */
+  margin-bottom: 30px;
+
+}
+/* Hover effect for the bottom icons */
+.navbar__bottom__Buttons .icon {
+  width: 20px; /* Icon size */
+  height: 20px; /* Maintain aspect ratio */
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out; /* Smooth scaling and background effect */
+  color: #828282cb; /* Light grey color */
+  border-radius: 50%; /* Circular hover effect */
+  padding: 10px; /* Add padding for hover effect size */
+  cursor: pointer;
+}
+
+.navbar__bottom__Buttons .icon:hover {
+  background-color: rgba(255, 0, 0, 0.2); /* Light red background */
+  transform: scale(1.2); /* Slight scaling on hover */
+}

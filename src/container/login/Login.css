@@ -1,0 +1,144 @@
+.login-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full height of the viewport */
+    width: 100vw; /* Full width of the viewport */
+    font-family: 'Poppins', sans-serif;
+  }
+  .login-form,
+  .login-welcome {
+    width: 400px;
+    height: 400px; /* Ensures equal height */
+    padding: 40px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 8px;
+  }
+  
+  .login-form {
+    background-color: #fff;
+    border-radius: 8px 0 0 8px;
+  }
+  .login-tamil-school-icon{
+    width: 50px;
+  }
+  .login-form-title-row {
+    display: flex; 
+    justify-content: space-between;
+    align-items: center; 
+  }
+  .login-welcome {
+    background: linear-gradient(to right, #ef7373, #fa2929);
+    color: white;
+    text-align: center;
+    border-radius: 0 8px 8px 0;
+  }
+  
+  .login-welcome h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .login-welcome p {
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  
+  .social-icons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-bottom: 20px;
+    color: #ff6b6b;
+  }
+  
+  .social-icons svg {
+    cursor: pointer;
+  }
+  
+  label {
+    font-size: 12px;
+    margin: 10px 0 5px;
+    display: block;
+    color: #888;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    margin: 10px 0;
+    font-size: 16px;
+  }
+  
+  .sign-in-btn {
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out, border 0.3s ease-in-out;
+    border: 2px solid #ff6b6b;
+  }
+  
+  .sign-in-btn:hover {
+    background: rgba(255, 255, 255, 1); /* Solid white with alpha for smoother blending */
+    color: #ff6b6b;
+    border: 2px solid #ff6b6b;
+  }
+  
+
+  .sign-up-btn {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    transition: background 0.3s, color 0.3s;
+    width: 50%;
+    align-self: center;
+  }
+  
+  .sign-up-btn:hover {
+    background: white;
+    color: #ff6b6b;
+  }
+  
+  .remember-forgot {
+    color: #888;
+    display: flex; /* Flexbox for alignment */
+    justify-content: space-between; /* Distribute items across the row */
+    align-items: center; /* Center items vertically */
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
+  .remember-forgot label {
+    display: flex; /* Make label a flex container */
+    align-items: center; /* Align the text and checkbox vertically */
+    gap: 5px; /* Add spacing between the checkbox and text */
+  }
+  
+  .remember-forgot-checkbox {
+    accent-color: red; /* Make the checkbox checkmark red */
+    width: 16px; /* Optional: Adjust size */
+    height: 16px; /* Optional: Adjust size */
+    cursor: pointer; /* Adds pointer cursor for better UX */
+  }
+  .login-forgotpassword{
+    color: #888;
+  }

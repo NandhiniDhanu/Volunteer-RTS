@@ -1,0 +1,27 @@
+/* Reset default body and html margins and paddings */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Ensure the HTML and body take up the full height of the viewport */
+}
+
+/* Root container for the app */
+.application {
+  display: flex; /* Flex container for layout */
+  height: 100vh; /* Take up the full viewport height */
+  margin: 0; /* No margin for the application container */
+  overflow: hidden; /* Prevent scrolling if the content overflows */
+  background-color: rgb(238, 238, 238); /* Light gray background */
+}
+
+/* Navbar styling */
+.navbar {
+  width: 7%; /* Navbar takes 7% of the screen width */
+  height: 100%; /* Ensure the navbar takes up the full height of the parent */
+}
+
+/* Screen styling */
+.screen {
+  flex: 1; /* Automatically takes up the remaining space */
+  height: 100%; /* Ensure the screen takes up the full height of the parent */
+}

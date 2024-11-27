@@ -1,0 +1,42 @@
+.posts__container {
+    display: flex;
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Prevent the container from scrolling */
+    padding: 2rem;
+    box-sizing: border-box;
+    flex-direction: row;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .all__posts {
+    flex: 7.5; /* Takes 75% of the width */
+    display: flex;
+    flex-direction: column; /* Stack posts vertically */
+    gap: 10px;
+    overflow-y: auto; /* Scroll only the posts section */
+    padding-right: 10px; /* Add spacing to the right */
+  }
+  
+  .posts__information {
+    flex: 2.5; /* Takes 25% of the width */
+    background-color: rgba(252, 252, 252, 0.736); /* Light background */
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 20px; /* Ensures some spacing at the top */
+    align-items: center;
+  }
+  
+  .posts__title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+    text-align: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+
+  

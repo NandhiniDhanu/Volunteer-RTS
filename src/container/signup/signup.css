@@ -1,0 +1,94 @@
+.signup-form {
+    width: 100%;
+    max-width: 400px;
+    height: 70%;
+    margin: 0 auto;
+    padding: 2rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    align-self: center;
+  }
+  
+  .signup-form h1 {
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .signup-form form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .signup-form label {
+    font-weight: bold;
+  }
+  
+  .signup-form input[type="text"],
+  .signup-form input[type="email"],
+  .signup-form input[type="password"] {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  
+  .signup-form .checkbox-group label {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+  }
+  
+  .signup-form .checkbox-group input[type="checkbox"] {
+    margin-right: 0.5rem;
+  }
+  
+  .signup-form .submit-button {
+    padding: 0.7rem;
+    font-size: 1rem;
+    background-color: #ff6b6b;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out, border 0.3s ease-in-out;
+    border: 2px solid #ff6b6b;
+  }
+  
+  .signup-form .submit-button:hover {
+    background: rgba(255, 255, 255, 1); /* Solid white with alpha for smoother blending */
+    color: #ff6b6b;
+    border: 2px solid #ff6b6b;  }
+  
+  .signup-form p {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  
+  .signup-form p a {
+    color: #ff6b6b;
+    text-decoration: none;
+  }
+  
+  .signup-form p a:hover {
+    text-decoration: underline;
+  }
+  .terms-checkbox {
+    accent-color: red; /* Makes the checkbox red */
+  }
+  
+  /* Style for the "terms and conditions" link */
+  .terms-link {
+    color: #ff6b6b; /* Makes the link text red */
+    text-decoration: none; /* Removes the underline */
+  }
+  
+  .terms-link:hover {
+    text-decoration: underline; /* Adds underline on hover */
+  }

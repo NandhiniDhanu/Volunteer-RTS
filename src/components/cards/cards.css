@@ -1,0 +1,128 @@
+.card__container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Align cards centrally */
+  align-items: flex-start; /* Ensure items align at the top */
+  width: 100%;
+  margin: 0 auto;
+}
+
+.card__container--few {
+  justify-content: flex-start; /* Align cards to the left for fewer cards */
+}
+
+.card__row {
+  display: flex;
+  flex-wrap: wrap; /* Wrap cards to the next row if necessary */
+  width: 100%; /* Full width for the container */
+  gap: 20px; /* Spacing between cards */
+  padding-left: 58px; /* Optional for aligning */
+}
+
+.card__row .card {
+  max-width: 280px; /* Optional max width */
+  flex: 1 1 calc(33.333% - 20px); /* Ensures 3 cards per row, accounting for gap */
+  box-sizing: border-box; /* Include padding/borders in width calculation */
+}
+
+.card__slider {
+  width: 900px; /* Width for the slider */
+}
+
+.slick-slide > div {
+  margin: 0 10px; /* Spacing between slides */
+}
+
+.card {
+  position: relative; /* Required for absolute positioning of footer */
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 320px;
+  max-height: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.card__image img {
+  width: 100%;
+  height: auto;
+}
+
+.card__content {
+  padding: 15px;
+  flex: 1; /* Allow content to grow and fill space */
+  overflow: hidden; /* Prevent overflow if content exceeds max-height */
+}
+.card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card__title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.card__options {
+  font-size: 15px;
+  color: #999;
+  cursor: pointer;
+}
+
+.card__description {
+  font-size: 14px;
+  color: #666;
+  margin: 10px 0 0;
+  line-height: 1.4; /* Line height for readability */
+
+  line-clamp: 2; /* Currently non-functional in most browsers */
+
+  display: -webkit-box; /* Required for -webkit-line-clamp */
+  -webkit-line-clamp: 3; /* Limit text to 2 lines */
+  -webkit-box-orient: vertical; /* Ensure vertical text orientation */
+  overflow: hidden; /* Hide overflowing text */
+  text-overflow: ellipsis; /* Add ellipsis (...) */
+}
+
+/* Fallback for unsupported browsers */
+.card__description.no-clamp {
+  display: block; /* Default display for compatibility */
+  max-height: 2.8em; /* Approx height for 2 lines based on line-height */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card__footer {
+  display: flex;
+  justify-content: flex-start; /* Align content to the left */
+  align-items: center; /* Vertically align content */
+  padding: 10px 15px;
+  margin-top: auto; /* Push footer to the bottom */
+  position: absolute; /* Position footer absolutely within the card */
+  bottom: 0; /* Align footer to the bottom of the card */
+  left: 0; /* Align footer to the left of the card */
+  width: 100%; /* Ensure footer spans the card's width */
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.card__date {
+  font-size: 12px;
+  color: #999;
+  margin: 0; /* Reset default margins */
+  padding: 5px; /* Optional padding for spacing */
+}
+
+
