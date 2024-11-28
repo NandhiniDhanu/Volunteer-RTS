@@ -13,18 +13,20 @@ const AdminDashboard = () => {
   const rowsPerPage = 10;
 
   // Fetch users data from the backend
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get("http://localhost:8000/admin_dashboard");
         const enhancedData = response.data.map((user, index) => ({
+          
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
           hoursCompleted: Math.floor(Math.random() * 100), // Placeholder value
           absences: Math.floor(Math.random() * 10), // Placeholder value
           present: Math.floor(Math.random() * 100), // Placeholder value
-          volunteeringTeams: `Team ${index % 5 + 1}`, // Placeholder value
+          volunteeringTeams: user.volunteeringTeams, 
         }));
         setUsersData(enhancedData);
       } catch (err) {

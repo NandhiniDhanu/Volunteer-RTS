@@ -120,18 +120,39 @@ app.post("/posts", async (req, res) => {
 });
 
 // Fetch All Users (Admin Dashboard)
+// Fetch All Users (Admin Dashboard)
 app.get("/admin_dashboard", async (req, res) => {
   try {
-    // Fetch users who do not have the admin role (5150)
     const users = await collection.find(
-      { roles: { $ne: 5150 } }, // Exclude users with role ID 5150
+      { roles: { $ne: 5150 } }, // Exclude users with admin role
       { password: 0 } // Exclude the password field
     );
-    res.status(200).json(users);
+
+    // Fetch all teams associated with the users
+    const teamIds = users.flatMap(user => user.team);
+
+    // Fetch team details from the Post collection
+    const teamDetails = await Post.find({ id: { $in: teamIds } });
+
+    // Create a map for quick lookup of team names by ID
+    const teamMap = teamDetails.reduce((map, post) => {
+      map[post.id] = post.title;
+      return map;
+    }, {});
+
+    // Add volunteeringTeams field to each user
+    const usersWithTeams = users.map(user => ({
+      ...user._doc,
+      volunteeringTeams: user.team.map(teamId => teamMap[teamId] || "Unknown Team").join(", "),
+    }));
+
+    res.status(200).json(usersWithTeams);
   } catch (err) {
+    console.error("Error fetching users:", err.message);
     res.status(500).json({ message: "Error fetching users", error: err.message });
   }
 });
+
 
 // Join a Team
 app.put("/join-team", async (req, res) => {
