@@ -1,7 +1,9 @@
 import React from "react";
+import Papa from "papaparse"; // Importing Papa for CSV generation
 import "./adminDashboard.css";
-
-const Members = ({ currentRows, totalPages, currentPage, handlePageClick }) => {
+import { FaDownload } from "react-icons/fa";
+<FaDownload />
+const Members = ({ currentRows, totalPages, currentPage, handlePageClick, usersData }) => {
   // Logic to compute the range of numbers to display
   const renderPageNumbers = () => {
     const pageNumbers = [];
@@ -34,6 +36,29 @@ const Members = ({ currentRows, totalPages, currentPage, handlePageClick }) => {
     return pageNumbers;
   };
 
+  // Function to export all table data as CSV
+  const exportAllToCSV = () => {
+    const csvData = usersData.map((row) => ({
+      "First Name": row.firstName,
+      "Last Name": row.lastName,
+      Email: row.email,
+      "Hours Completed": row.hoursCompleted,
+      Absences: row.absences,
+      Present: row.present,
+      "Volunteering Teams": row.volunteeringTeams,
+    }));
+
+    const csv = Papa.unparse(csvData);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+
+    const timestamp = new Date().toISOString().slice(0, 19).replace("T", "_");
+    link.download = `users_data_${timestamp}.csv`;
+    link.click();
+  };
+
   return (
     <div>
       {/* Members Table */}
@@ -47,7 +72,20 @@ const Members = ({ currentRows, totalPages, currentPage, handlePageClick }) => {
               <th>Hours Completed</th>
               <th>Absences</th>
               <th>Present</th>
-              <th>Volunteering Teams</th>
+              <th>
+                Volunteering Teams
+                <FaDownload
+                  onClick={exportAllToCSV}
+                  className="download-icon"
+                  title="Export to CSV"
+                  style={{
+                    marginLeft: "50px",
+                    cursor: "pointer",
+                    fontSize: "1.2rem",
+                    color: "red"
+                  }}
+                />
+              </th>
             </tr>
           </thead>
           <tbody>

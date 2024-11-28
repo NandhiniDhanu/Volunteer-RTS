@@ -4,29 +4,28 @@ import Members from "./Members";
 import Info from "./Info";
 import Requests from "./Requests";
 import axios from "axios";
-import useAuth from "../../hooks/useAuth"; // Import the useAuth hook
+import useAuth from "../../hooks/useAuth";
+import Papa from "papaparse";
+
 
 const AdminDashboard = () => {
-  const { auth } = useAuth(); // Retrieve the authenticated user
-  const [usersData, setUsersData] = useState([]); // State to store users
+  const { auth } = useAuth();
+  const [usersData, setUsersData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
-
-  // Fetch users data from the backend
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get("http://localhost:8000/admin_dashboard");
         const enhancedData = response.data.map((user, index) => ({
-          
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
-          hoursCompleted: Math.floor(Math.random() * 100), // Placeholder value
-          absences: Math.floor(Math.random() * 10), // Placeholder value
-          present: Math.floor(Math.random() * 100), // Placeholder value
-          volunteeringTeams: user.volunteeringTeams, 
+          hoursCompleted: Math.floor(Math.random() * 100),
+          absences: Math.floor(Math.random() * 10),
+          present: Math.floor(Math.random() * 100),
+          volunteeringTeams: user.volunteeringTeams,
         }));
         setUsersData(enhancedData);
       } catch (err) {
@@ -36,6 +35,20 @@ const AdminDashboard = () => {
 
     fetchUsers();
   }, []);
+
+  const exportToCSV = () => {
+    const csvData = usersData.map((user) => ({
+      "First Name": user.firstName,
+      "Last Name": user.lastName,
+      Email: user.email,
+      "Hours Completed": user.hoursCompleted,
+      Absences: user.absences,
+      Present: user.present,
+      "Volunteering Teams": user.volunteeringTeams,
+    }));
+
+    
+  };
 
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
@@ -59,6 +72,8 @@ const AdminDashboard = () => {
             totalPages={totalPages}
             currentPage={currentPage}
             handlePageClick={handlePageClick}
+            usersData={usersData} // Pass full data for export
+
           />
         );
       case "Requests":
