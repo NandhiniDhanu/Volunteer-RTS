@@ -38,6 +38,7 @@ const Posts = () => {
   
   const handleCardClick = (post) => {
     setSelectedPost(post); // Set the clicked card as the selected post
+
 };
   // Handle adding a new post
   const handleAddPost = async (postData) => {

@@ -90,7 +90,7 @@ const generateUniqueId = async () => {
 
 // Add a New Post (Admin Only)
 app.post("/posts", async (req, res) => {
-  const { title, description, location, weeklyDays, startDate, endDate, randomDates, createdBy } = req.body;
+  const { title, description, location, weeklyDays, startDate, endDate, randomDates, startTime, endTime, createdBy } = req.body;
   try {
     // Check if the user is an admin
     const user = await collection.findOne({ email: createdBy });
@@ -108,6 +108,8 @@ app.post("/posts", async (req, res) => {
       startDate,
       endDate,
       randomDates,
+      startTime,
+      endTime,
       createdBy,
       id: uniqueId,
     });

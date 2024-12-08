@@ -14,6 +14,8 @@ const AdminForm = ({ onClose, onSubmit }) => {
     weeklyDays: [], // Selected weekdays
     startDate: null,
     endDate: null,
+    startTime: "", // Start time
+    endTime: "", // End time
     randomDates: [], // Random dates selected on the calendar
   });
 
@@ -107,12 +109,21 @@ const AdminForm = ({ onClose, onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+  
     if (!newPost.title || !newPost.description || !newPost.location) {
       alert("Please fill in all required fields.");
       return;
     }
-    onSubmit(newPost);
+  
+    const formattedPost = {
+      ...newPost,
+      startTime: dayjs(newPost.startTime, "HH:mm").format("hh:mm A"),
+      endTime: dayjs(newPost.endTime, "HH:mm").format("hh:mm A"),
+    };
+  
+    onSubmit(formattedPost); // Send the formatted post with AM/PM times
   };
+  
 
   // Custom Day Component
   const ServerDay = (props) => {
@@ -222,7 +233,30 @@ const AdminForm = ({ onClose, onSubmit }) => {
               />
             </LocalizationProvider>
           </div>
-
+          <div>
+            <label>Start Time</label>
+              <input
+                type="time"
+                value={newPost.startTime ? dayjs(newPost.startTime, "hh:mm A").format("HH:mm") : ""}
+                onChange={(e) => {
+                  const formattedTime = dayjs(e.target.value, "HH:mm").format("hh:mm A");
+                  setNewPost((prev) => ({ ...prev, startTime: formattedTime }));
+                }}
+                required
+              />
+            </div>
+            <div>
+              <label>End Time</label>
+              <input
+                type="time"
+                value={newPost.endTime ? dayjs(newPost.endTime, "hh:mm A").format("HH:mm") : ""}
+                onChange={(e) => {
+                  const formattedTime = dayjs(e.target.value, "HH:mm").format("hh:mm A");
+                  setNewPost((prev) => ({ ...prev, endTime: formattedTime }));
+                }}
+                required
+              />
+          </div>
           {/* Buttons */}
           <button type="submit" className="btn">
             Add Post

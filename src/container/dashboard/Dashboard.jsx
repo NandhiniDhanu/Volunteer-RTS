@@ -9,7 +9,7 @@ import { MdAdd } from "react-icons/md";
 import useAuth from "../../hooks/useAuth"; // Import the useAuth hook
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // For making API requests
-
+import ScheduleDashboard from './scheduleDashboard';
 const Dashboard = () => {
   const { auth } = useAuth(); // Retrieve the authenticated user
   const today = new Date();
@@ -62,23 +62,14 @@ const Dashboard = () => {
           <Cards data={userPosts} variant="slider" />
         </div>
         <div className='information__container'>
-          <div className='tasks__container'></div>
+          <div className='tasks__container'>
+
+          </div>
           <div className='analytics__container'></div>
         </div>
       </div>
       <div className='schedule__container'>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DateCalendar
-            value={date}
-            onChange={(newValue) => setDate(newValue)}
-            sx={{
-              '.Mui-selected': {
-                backgroundColor: 'red !important',
-                color: 'white !important',
-              },
-            }}
-          />
-        </LocalizationProvider>
+        <ScheduleDashboard/>
       </div>
     </div>
   );

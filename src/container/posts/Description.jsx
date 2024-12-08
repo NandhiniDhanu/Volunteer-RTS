@@ -22,7 +22,7 @@ const Description = ({ post }) => {
     );
   }
 
-  const { title, description, startDate, endDate, time, location, weeklyDays, randomDates } = post;
+  const { title, description, startDate, endDate, startTime, endTime, location, weeklyDays, randomDates } = post;
 
   // Format the start and end dates
   const formattedStartDate = startDate
@@ -33,7 +33,6 @@ const Description = ({ post }) => {
     ? new Date(endDate).toLocaleDateString()
     : "No end date provided";
 
-  // Combine the start and end dates into a single range
   const dateRange = startDate && endDate
     ? `${formattedStartDate} - ${formattedEndDate}`
     : startDate
@@ -42,6 +41,22 @@ const Description = ({ post }) => {
     ? `Ends on: ${formattedEndDate}`
     : "No date range provided";
   
+  const formattedStartTime = startTime
+    ? dayjs(`1970-01-01 ${startTime}`).format("hh:mm A") // Ensure time is formatted correctly
+    : "No start time provided";
+  
+  const formattedEndTime = endTime
+    ? dayjs(`1970-01-01 ${endTime}`).format("hh:mm A")
+    : "No end time provided";
+  
+  // Combine the start and end times into a single range
+  const timeRange = startTime && endTime
+    ? `${formattedStartTime} - ${formattedEndTime}`
+    : startTime
+    ? `Starts at: ${formattedStartTime}`
+    : endTime
+    ? `Ends at: ${formattedEndTime}`
+    : "No time range provided";
   const { auth } = useAuth(); // Get current user info
 
   const [highlightedDays, setHighlightedDays] = useState([]);
@@ -120,8 +135,9 @@ const Description = ({ post }) => {
             </p>
             <p>
               <IoTimeOutline className="description__icon" />
-              <strong>Time:</strong> {time || "No time provided"}
+              <strong>Time:</strong> {timeRange || "No time provided"}
             </p>
+
             <p>
               <IoLocationOutline className="description__icon" />
               <strong>Location:</strong> {location || "No location provided"}

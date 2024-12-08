@@ -79,8 +79,16 @@ const postSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  startTime: {
+    type: String, // Time in HH:MM format
+    required: false,
+  },
+  endTime: {
+    type: String, // Time in HH:MM format
+    required: false,
+  },
   createdBy: {
-    type: String,
+    type: [String],
     required: true,
   },
   id: {
