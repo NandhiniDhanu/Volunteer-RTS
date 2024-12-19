@@ -1,0 +1,33 @@
+.attendance-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .attendance-table th,
+  .attendance-table td {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 10px;
+  }
+  
+  .attendance-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+  
+  .status.present {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  

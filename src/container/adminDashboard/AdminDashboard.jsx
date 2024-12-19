@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./adminDashboard.css";
 import Members from "./Members";
-import Info from "./Info";
+import Attendance from "./Attendance";
 import Requests from "./Requests";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
-import Papa from "papaparse";
-
 
 const AdminDashboard = () => {
   const { auth } = useAuth();
@@ -36,20 +34,6 @@ const AdminDashboard = () => {
     fetchUsers();
   }, []);
 
-  const exportToCSV = () => {
-    const csvData = usersData.map((user) => ({
-      "First Name": user.firstName,
-      "Last Name": user.lastName,
-      Email: user.email,
-      "Hours Completed": user.hoursCompleted,
-      Absences: user.absences,
-      Present: user.present,
-      "Volunteering Teams": user.volunteeringTeams,
-    }));
-
-    
-  };
-
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
   const currentRows = usersData.slice(indexOfFirstRow, indexOfLastRow);
@@ -59,12 +43,14 @@ const AdminDashboard = () => {
     setCurrentPage(page);
   };
 
-  const [activeTab, setActiveTab] = useState("Info");
+  const [activeTab, setActiveTab] = useState("Attendance");
 
   const renderActiveTab = () => {
     switch (activeTab) {
-      case "Info":
-        return <Info />;
+      case "Attendance":
+        return (
+          <Attendance/>
+        );
       case "Members":
         return (
           <Members
@@ -73,13 +59,12 @@ const AdminDashboard = () => {
             currentPage={currentPage}
             handlePageClick={handlePageClick}
             usersData={usersData} // Pass full data for export
-
           />
         );
       case "Requests":
         return <Requests />;
       default:
-        return <Info />;
+        return <Members />;
     }
   };
 
@@ -91,10 +76,10 @@ const AdminDashboard = () => {
 
       <div className="dashboard-tabs">
         <button
-          className={`tab-button ${activeTab === "Info" ? "active" : ""}`}
-          onClick={() => setActiveTab("Info")}
+          className={`tab-button ${activeTab === "Attendance" ? "active" : ""}`}
+          onClick={() => setActiveTab("Attendance")}
         >
-          Info
+          Attendance
         </button>
         <button
           className={`tab-button ${activeTab === "Members" ? "active" : ""}`}

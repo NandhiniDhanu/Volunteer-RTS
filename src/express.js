@@ -2,6 +2,7 @@ import express from "express";
 import { collection, Post } from "./mongo.js"; // Import both schemas
 import cors from "cors";
 import bcrypt from "bcrypt";
+import dayjs from 'dayjs';
 
 const app = express();
 
@@ -198,6 +199,48 @@ app.get("/user/posts", async (req, res) => {
     res.status(500).json({ message: "Error fetching user's posts", error: err.message });
   }
 });
+
+// Fetch Today's Events and Their Attendees
+// Fetch Events and Their Attendees for a Specific Date
+app.get("/attendance", async (req, res) => {
+  try {
+    const events = await Post.find(); // Fetch all events
+
+    if (events.length === 0) {
+      return res.status(200).json([]);
+    }
+
+    // Fetch all users associated with any of the events
+    const eventIds = events.map((event) => event.id);
+    const users = await collection.find(
+      { team: { $in: eventIds } },
+      { password: 0 } // Exclude sensitive information
+    );
+
+    // Combine all events and their attendees
+    const attendanceData = events.map((event) => {
+      const attendees = users.filter((user) => user.team.includes(event.id));
+      return {
+        event: {
+          id: event.id,
+          title: event.title,
+          description: event.description,
+          startDate: event.startDate,
+          endDate: event.endDate,
+          weeklyDays: event.weeklyDays,
+          randomDates: event.randomDates,
+        },
+        attendees,
+      };
+    });
+
+    res.status(200).json(attendanceData);
+  } catch (err) {
+    console.error("Error fetching attendance data:", err);
+    res.status(500).json({ message: "Error fetching attendance data", error: err.message });
+  }
+});
+
 
 // Start the Server
 app.listen(8000, () => console.log("Server running on http://localhost:8000"));

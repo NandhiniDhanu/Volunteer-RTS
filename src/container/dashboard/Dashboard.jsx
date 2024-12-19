@@ -26,6 +26,7 @@ const Dashboard = () => {
         const response = await axios.get("http://localhost:8000/user/posts", {
           params: { email: auth?.user?.email }, // Pass the user's email
         });
+        console.log("Fetched events:", response.data); // Debugging line
         setUserPosts(response.data);
       } catch (error) {
         console.error("Error fetching user posts:", error);
@@ -69,7 +70,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div className='schedule__container'>
-        <ScheduleDashboard/>
+        <ScheduleDashboard userEmail={auth?.user?.email} userPosts={userPosts} />
       </div>
     </div>
   );

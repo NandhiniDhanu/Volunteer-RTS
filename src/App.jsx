@@ -46,12 +46,3 @@ const App = () => {
   );
 };
 export default App;
-
-// <div className='application'>
-    //   <div className='navbar'>
-    //     <Navbar/>
-    //   </div>
-    //   <div className='screen'>
-    //     <AdminDashboard/>
-    //   </div>
-    // </div>
