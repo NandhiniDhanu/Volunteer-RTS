@@ -5,12 +5,16 @@ import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import Mainlayout from './components/Mainlayout'
 import RequireAuth from './components/RequireAuth'
+import MentorPage from './components/pages/MentorPage'
+import TeamAdminPage from './components/pages/TeamAdminPage'
 
 import './App.css'
 
 const ROLES = {
   'User': 2001,
-  'Admin': 5150
+  'Admin': 5150,
+  'Mentor': 3001,
+  'TeamAdmin': 4001
 }
 
 const App = () => {
@@ -36,12 +40,27 @@ const App = () => {
                   <Route path="admin_dashboard" element={<AdminDashboard />} />
               </Route>
           </Route>
-           {/* Shared Protected Route for Both Roles */}
-           <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin]} />}>
-                <Route element={<Mainlayout />}>
-                    <Route path="posts" element={<Posts />} />
-                </Route>
-            </Route>
+
+          {/* Mentor Route */}
+          <Route element={<RequireAuth allowedRoles={[ROLES.Mentor]} />}>
+              <Route element={<Mainlayout />}>
+                  <Route path="mentor" element={<MentorPage />} />
+              </Route>
+          </Route>
+
+          {/* Team Admin Route */}
+          <Route element={<RequireAuth allowedRoles={[ROLES.TeamAdmin]} />}>
+              <Route element={<Mainlayout />}>
+                  <Route path="team-admin" element={<TeamAdminPage />} />
+              </Route>
+          </Route>
+
+          {/* Shared Protected Route for All Roles */}
+          <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin, ROLES.Mentor, ROLES.TeamAdmin]} />}>
+              <Route element={<Mainlayout />}>
+                  <Route path="posts" element={<Posts />} />
+              </Route>
+          </Route>
       </Routes>
   );
 };

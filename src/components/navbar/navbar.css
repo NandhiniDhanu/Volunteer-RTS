@@ -50,14 +50,16 @@
 .job__icon,
 .analytics__icon,
 .mail__icon,
-.setting__icon {
-  position: relative; /* Key for pseudo-element positioning */
+.setting__icon,
+.mentor__icon,
+.team-admin__icon {
+  position: relative;
   padding: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out; /* Smooth scaling and background effect */
-  border-radius: 50%; /* Ensure the hover effect is circular */
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  border-radius: 50%;
   cursor: pointer;
 }
 
@@ -65,9 +67,18 @@
 .job__icon:hover,
 .analytics__icon:hover,
 .mail__icon:hover,
-.setting__icon:hover {
-  background-color: rgba(255, 0, 0, 0.2); /* Light red background */
-  transform: scale(1.2); /* Slight scaling on hover */
+.setting__icon:hover,
+.mentor__icon:hover,
+.team-admin__icon:hover {
+  background-color: rgba(255, 0, 0, 0.2);
+  transform: scale(1.2);
+}
+
+/* Active state for Mentor and Team Admin buttons */
+.mentor__icon.active,
+.team-admin__icon.active {
+  background-color: rgba(255, 0, 0, 0.2);
+  transform: scale(1.1);
 }
 
 /* Styling for the icons themselves */

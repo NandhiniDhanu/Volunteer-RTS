@@ -241,6 +241,30 @@ app.get("/attendance", async (req, res) => {
   }
 });
 
+// Update User Role (Admin Only)
+app.put("/update-user-role", async (req, res) => {
+  const { email, newRole } = req.body;
+  try {
+    // Check if the requester is an admin
+    const adminUser = await collection.findOne({ email: req.body.adminEmail });
+    if (!adminUser || !adminUser.roles.includes(5150)) {
+      return res.status(403).json({ message: "Unauthorized. Only admins can update roles." });
+    }
+
+    const user = await collection.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update the user's role
+    user.roles = [newRole];
+    await user.save();
+
+    res.status(200).json({ message: "User role updated successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Error updating user role", error: err.message });
+  }
+});
 
 // Start the Server
 app.listen(8000, () => console.log("Server running on http://localhost:8000"));

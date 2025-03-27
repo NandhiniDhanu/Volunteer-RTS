@@ -7,7 +7,9 @@ import {
   BsFillBarChartFill, 
   BsEnvelope, 
   BsGear, 
-  BsPersonCircle 
+  BsPersonCircle,
+  BsPeopleFill,
+  BsPersonWorkspace
 } from 'react-icons/bs';
 import { IoIosLogOut } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
@@ -44,6 +46,18 @@ const handleDashboardClick = () => {
     navigate('/posts');
   };
 
+  const handleMentorClick = () => {
+    if (auth?.roles?.includes(3001)) {
+      navigate('/mentor');
+    }
+  };
+
+  const handleTeamAdminClick = () => {
+    if (auth?.roles?.includes(4001)) {
+      navigate('/team-admin');
+    }
+  };
+
   return (
     <div className="navbar__container">
       <div className="navbar__style">
@@ -57,6 +71,18 @@ const handleDashboardClick = () => {
           <div className="job__icon" onClick={handlePostsClick}>
             <BsSearch className="icon" />
           </div>
+          {/* Mentor Button - Only visible for Mentor role */}
+          {auth?.roles?.includes(3001) && (
+            <div className="mentor__icon" onClick={handleMentorClick}>
+              <BsPersonWorkspace className="icon" />
+            </div>
+          )}
+          {/* Team Admin Button - Only visible for Team Admin role */}
+          {auth?.roles?.includes(4001) && (
+            <div className="team-admin__icon" onClick={handleTeamAdminClick}>
+              <BsPeopleFill className="icon" />
+            </div>
+          )}
           <div className="analytics__icon">
             <BsFillBarChartFill className="icon" />
           </div>
