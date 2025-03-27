@@ -47,9 +47,7 @@ const handleDashboardClick = () => {
   };
 
   const handleMentorClick = () => {
-    if (auth?.roles?.includes(3001)) {
-      navigate('/mentor');
-    }
+    navigate('/mentor')
   };
 
   const handleTeamAdminClick = () => {
@@ -71,22 +69,10 @@ const handleDashboardClick = () => {
           <div className="job__icon" onClick={handlePostsClick}>
             <BsSearch className="icon" />
           </div>
-          {/* Mentor Button - Only visible for Mentor role */}
-          {auth?.roles?.includes(3001) && (
-            <div className="mentor__icon" onClick={handleMentorClick}>
-              <BsPersonWorkspace className="icon" />
-            </div>
-          )}
-          {/* Team Admin Button - Only visible for Team Admin role */}
-          {auth?.roles?.includes(4001) && (
-            <div className="team-admin__icon" onClick={handleTeamAdminClick}>
-              <BsPeopleFill className="icon" />
-            </div>
-          )}
           <div className="analytics__icon">
             <BsFillBarChartFill className="icon" />
           </div>
-          <div className="mail__icon">
+          <div className="mail__icon" onClick={handleMentorClick}>
             <BsEnvelope className="icon" />
           </div>
           <div className="setting__icon">
