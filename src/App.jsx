@@ -42,7 +42,7 @@ const App = () => {
           </Route>
 
           {/* Mentor Route */}
-          <Route element={<RequireAuth allowedRoles={[ROLES.Mentor]} />}>
+          <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
               <Route element={<Mainlayout />}>
                   <Route path="mentor" element={<MentorPage />} />
               </Route>
