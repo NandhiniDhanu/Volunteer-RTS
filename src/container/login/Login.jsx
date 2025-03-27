@@ -46,7 +46,9 @@ const Login = () => {
 
 const defaultPath = (roles) => {
   if (roles.includes(5150)) return "/admin_dashboard"; // Admin role
-  if (roles.includes(2001)) return "/dashboard"; // User role
+  if (roles.includes(2001)) return "/team-admin"; // Team Admin role 4001
+  if (roles.includes(2001)) return "/mentor"; // Mentor role 3001
+  if (roles.includes(2001)) return "/dashboard"; // User role 2001
   return "/unauthorized"; // Fallback for unhandled roles
 };
 
