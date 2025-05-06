@@ -3,65 +3,49 @@ import "./description.css";
 import { BsCalendar2Date } from "react-icons/bs";
 import { IoTimeOutline } from "react-icons/io5";
 import { IoLocationOutline } from "react-icons/io5";
+import { FaTasks } from "react-icons/fa";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { PickersDay } from "@mui/x-date-pickers/PickersDay";
-import useAuth from "../../hooks/useAuth"; // Hook to get auth context
+import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 
-const Description = ({ post }) => {
-  if (!post) {
+const Description = ({ item }) => { // Changed prop name from post to item
+  if (!item) {
     return (
       <div className="description__container">
         <p className="description__placeholder">
-          Select a post to see the details here.
+          Select an item to see details here.
         </p>
       </div>
     );
   }
 
-  const { title, description, startDate, endDate, startTime, endTime, location, weeklyDays, randomDates } = post;
-
-  // Format the start and end dates
-  const formattedStartDate = startDate
-    ? new Date(startDate).toLocaleDateString()
-    : "No start date provided";
-
-  const formattedEndDate = endDate
-    ? new Date(endDate).toLocaleDateString()
-    : "No end date provided";
-
-  const dateRange = startDate && endDate
-    ? `${formattedStartDate} - ${formattedEndDate}`
-    : startDate
-    ? `Starts on: ${formattedStartDate}`
-    : endDate
-    ? `Ends on: ${formattedEndDate}`
-    : "No date range provided";
+  // Common fields for both types
+  const { title, description, type } = item;
   
-  const formattedStartTime = startTime
-    ? dayjs(`1970-01-01 ${startTime}`).format("hh:mm A") // Ensure time is formatted correctly
-    : "No start time provided";
-  
-  const formattedEndTime = endTime
-    ? dayjs(`1970-01-01 ${endTime}`).format("hh:mm A")
-    : "No end time provided";
-  
-  // Combine the start and end times into a single range
-  const timeRange = startTime && endTime
-    ? `${formattedStartTime} - ${formattedEndTime}`
-    : startTime
-    ? `Starts at: ${formattedStartTime}`
-    : endTime
-    ? `Ends at: ${formattedEndTime}`
-    : "No time range provided";
-  const { auth } = useAuth(); // Get current user info
+  // Post-specific fields
+  const { startDate, endDate, startTime, endTime, location, weeklyDays, randomDates } = type === 'post' ? item : {};
 
+  const { auth } = useAuth();
   const [highlightedDays, setHighlightedDays] = useState([]);
 
+  // Date formatting
+  const formattedDate = type === 'task' 
+    ? `Due: ${item.formattedDate}`
+    : startDate && endDate
+      ? `${new Date(startDate).toLocaleDateString()} - ${new Date(endDate).toLocaleDateString()}`
+      : startDate
+        ? `Starts on: ${new Date(startDate).toLocaleDateString()}`
+        : endDate
+          ? `Ends on: ${new Date(endDate).toLocaleDateString()}`
+          : "No date range provided";
+
   useEffect(() => {
+    if (type !== 'post') return;
+    
     const generateHighlightedDates = () => {
       if (!startDate || !endDate) return randomDates || [];
       const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -71,7 +55,6 @@ const Description = ({ post }) => {
       let current = start;
       const generatedWeeklyDates = [];
 
-      // Generate dates for weeklyDays
       while (current.isBefore(end) || current.isSame(end)) {
         const dayOfWeek = weekdays[current.day()];
         if (weeklyDays?.includes(dayOfWeek)) {
@@ -80,14 +63,12 @@ const Description = ({ post }) => {
         current = current.add(1, "day");
       }
 
-      // Combine weekly and random dates
       return Array.from(new Set([...generatedWeeklyDates, ...(randomDates || [])]));
     };
 
     setHighlightedDays(generateHighlightedDates());
-  }, [startDate, endDate, weeklyDays, randomDates]);
+  }, [startDate, endDate, weeklyDays, randomDates, type]);
 
-  // Custom Day Component
   const ServerDay = (props) => {
     const { day, highlightedDays = [], ...other } = props;
     const formattedDate = dayjs(day).format("YYYY-MM-DD");
@@ -98,21 +79,22 @@ const Description = ({ post }) => {
         {...other}
         day={day}
         sx={{
-          backgroundColor: isSelected ? "red" : undefined, // Red for selected dates
-          color: isSelected ? "white" : undefined, // White text for better contrast
+          backgroundColor: isSelected ? "red" : undefined,
+          color: isSelected ? "white" : undefined,
           "&:hover": {
-            backgroundColor: isSelected ? "darkred" : undefined, // Darker red on hover
+            backgroundColor: isSelected ? "darkred" : undefined,
           },
-          borderRadius: isSelected ? "50%" : undefined, // Keep the circular shape
+          borderRadius: isSelected ? "50%" : undefined,
         }}
       />
     );
   };
+
   const handleJoinNow = async () => {
     try {
       const response = await axios.put("http://localhost:8000/join-team", {
-        email: auth.user.email, // Current user's email
-        postId: post.id, // Current post ID
+        email: auth.user.email,
+        postId: item.id,
       });
 
       if (response.status === 200) {
@@ -123,48 +105,61 @@ const Description = ({ post }) => {
       alert("Failed to join the team. Please try again.");
     }
   };
+
   return (
     <div className="description__container">
       <div className="description__header">
         <div className="event__summary">
-          <h2>{title || "No Title Available"}</h2>
+          <h2>
+            {type === 'task' && <FaTasks style={{ marginRight: '10px' }} />}
+            {title || "No Title Available"}
+          </h2>
           <div className="event__details">
             <p>
               <BsCalendar2Date className="description__icon" />
-              <strong>Date:</strong> {dateRange}
+              <strong>{type === 'task' ? 'Due Date' : 'Date'}:</strong> {formattedDate}
             </p>
-            <p>
-              <IoTimeOutline className="description__icon" />
-              <strong>Time:</strong> {timeRange || "No time provided"}
-            </p>
-
-            <p>
-              <IoLocationOutline className="description__icon" />
-              <strong>Location:</strong> {location || "No location provided"}
-            </p>
+            {type === 'post' && (
+              <>
+                <p>
+                  <IoTimeOutline className="description__icon" />
+                  <strong>Time:</strong> {startTime && endTime 
+                    ? `${dayjs(`1970-01-01 ${startTime}`).format("hh:mm A")} - ${dayjs(`1970-01-01 ${endTime}`).format("hh:mm A")}`
+                    : "No time provided"}
+                </p>
+                <p>
+                  <IoLocationOutline className="description__icon" />
+                  <strong>Location:</strong> {location || "No location provided"}
+                </p>
+              </>
+            )}
           </div>
         </div>
       </div>
-      <div className="calendar">
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DateCalendar
-            defaultValue={null}
-            slots={{ day: ServerDay }}
-            slotProps={{
-              day: { highlightedDays },
-            }}
-          />
-        </LocalizationProvider>
-      </div>
+
+      {type === 'post' && (
+        <div className="calendar">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateCalendar
+              defaultValue={null}
+              slots={{ day: ServerDay }}
+              slotProps={{
+                day: { highlightedDays },
+              }}
+            />
+          </LocalizationProvider>
+        </div>
+      )}
+
       <div className="description__body">
         <p>{description || "No description available."}</p>
       </div>
-        <div className="action__button">
-        {auth?.roles?.includes(2001) && (
-          <button onClick={handleJoinNow}>Join Now</button>
-        )}
 
+      {type === 'post' && auth?.roles?.includes(2001) && (
+        <div className="action__button">
+          <button onClick={handleJoinNow}>Join Now</button>
         </div>
+      )}
     </div>
   );
 };

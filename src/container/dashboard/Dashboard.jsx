@@ -6,35 +6,35 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { Cards } from '../../components';
 import { MdAdd } from "react-icons/md";
-import useAuth from "../../hooks/useAuth"; // Import the useAuth hook
+import useAuth from "../../hooks/useAuth";
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // For making API requests
+import axios from 'axios';
 import ScheduleDashboard from './scheduleDashboard';
+
 const Dashboard = () => {
-  const { auth } = useAuth(); // Retrieve the authenticated user
+  const { auth } = useAuth();
   const today = new Date();
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = today.toLocaleDateString(undefined, options);
   const [date, setDate] = useState(dayjs());
-  const [userPosts, setUserPosts] = useState([]); // State for storing user's posts
+  const [userPosts, setUserPosts] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch posts associated with the user's team
-    const fetchUserPosts = async () => {
+    const fetchUserData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/user/posts", {
-          params: { email: auth?.user?.email }, // Pass the user's email
+        // Fetch posts
+        const postsResponse = await axios.get("http://localhost:8000/user/posts", {
+          params: { email: auth?.user?.email },
         });
-        console.log("Fetched events:", response.data); // Debugging line
-        setUserPosts(response.data);
+        setUserPosts(postsResponse.data);
       } catch (error) {
-        console.error("Error fetching user posts:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
     if (auth?.user?.email) {
-      fetchUserPosts();
+      fetchUserData();
     }
   }, [auth?.user?.email]);
 
@@ -59,13 +59,10 @@ const Dashboard = () => {
           </div>
         </div>
         <div className='volunteer__container'>
-          {/* Pass fetched user posts to Cards */}
           <Cards data={userPosts} variant="slider" />
         </div>
         <div className='information__container'>
-          <div className='tasks__container'>
-
-          </div>
+          {/* Removed Assigned Tasks Block */}
           <div className='analytics__container'></div>
         </div>
       </div>

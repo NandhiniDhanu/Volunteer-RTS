@@ -6,95 +6,170 @@ import { MdAdd } from "react-icons/md";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 import AdminForm from "./AdminForm";
+
 const Posts = () => {
-  const { auth } = useAuth(); // Retrieve auth data from the context
-  const [posts, setPosts] = useState([]); // Dynamic posts from backend
-  const [newPost, setNewPost] = useState({ title: "", description: "" }); // New post state
-  const [showAddForm, setShowAddForm] = useState(false); // Toggle form visibility
-  const [selectedPost, setSelectedPost] = useState(null); // Track the selected post
+  const { auth } = useAuth();
+  const [posts, setPosts] = useState([]);
+  const [newPost, setNewPost] = useState({ title: "", description: "" });
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null); // Changed to handle both types
 
   const isAdmin = auth?.roles?.includes(5150);
 
-  // Fetch posts from backend
+  // Mock tasks data
+  const mockTasks ={ 
+    myTasks: [
+    {
+      id: 1,
+      title: "Food Section",
+      description: "Manage food Distribution for the event",
+      formattedDate: new Date().toLocaleDateString(),
+      type: 'task'
+    },
+    {
+      id: 2,
+      title: "Safety Patrol",
+      description: "Monitor event safety and security",
+      formattedDate: new Date(Date.now() + 86400000).toLocaleDateString(),
+      type: 'task'
+    }
+  ],
+
+  assignedTasks: [
+    {
+      id: 3,
+      title: "Setup Equipment",
+      description: "Prepare all audio/visual equipment",
+      formattedDate: new Date(Date.now() + 2 * 86400000).toLocaleDateString(),
+      type: 'task'
+    }
+  ],
+  completedTasks: [
+    {
+      id: 4,
+      title: "Volunteer Recruitment",
+      description: "Completed recruiting 20 volunteers",
+      formattedDate: new Date(Date.now() - 86400000).toLocaleDateString(),
+      type: 'task'
+    }
+  ],
+  pendingTasks: [
+    {
+      id: 5,
+      title: "Final Review",
+      description: "Pending final approval from management",
+      formattedDate: new Date(Date.now() + 3 * 86400000).toLocaleDateString(),
+      type: 'task'
+    }
+  ]};
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get("http://localhost:8000/posts");
-  
         const formattedPosts = response.data.map((post) => ({
           ...post,
-          formattedDate: new Date(post.date).toLocaleDateString(), // Ensure this formats correctly
+          formattedDate: new Date(post.date).toLocaleDateString(),
+          type: 'post' // Add type identifier
         }));
-  
-        console.log(formattedPosts); // Debug to confirm formattedDate is set correctly
-        setPosts(formattedPosts); // Set formatted posts in state
+        setPosts(formattedPosts);
       } catch (err) {
         console.error("Error fetching posts:", err);
       }
     };
-  
     fetchPosts();
   }, []);
-  
-  const handleCardClick = (post) => {
-    setSelectedPost(post); // Set the clicked card as the selected post
 
-};
-  // Handle adding a new post
   const handleAddPost = async (postData) => {
     if (!postData.title || !postData.description) {
       alert("Please fill in all fields.");
       return;
     }
-  
-  
     try {
       const response = await axios.post("http://localhost:8000/posts", {
         ...postData,
-        createdBy: auth?.user?.email, // Use logged-in admin's email
+        createdBy: auth?.user?.email,
       });
-  
-      // Add the newly created post with a formatted date
       const addedPost = {
         ...response.data.post,
-        formattedDate: new Date(response.data.post.date).toLocaleDateString(), // Format the date
+        formattedDate: new Date(response.data.post.date).toLocaleDateString(),
+        type: 'post'
       };
-  
-      setPosts((prevPosts) => [addedPost, ...prevPosts]); // Add new post to the list
-      setShowAddForm(false); // Close the form
+      setPosts((prevPosts) => [addedPost, ...prevPosts]);
+      setShowAddForm(false);
     } catch (err) {
       console.error("Error adding post:", err);
       alert("Failed to add post. Please try again.");
     }
   };
-  
 
   return (
     <div className="posts__container">
       <div className="all__posts">
-        <div className="posts__header">
-          <h1 className="posts__title">Volunteer Opportunities</h1>
-          {isAdmin && (
-            <button
-              className="addpost__button"
-              onClick={() => setShowAddForm((prev) => !prev)} // Toggle add form
-              aria-label="Add Post"
-            >
-              <MdAdd className="add-icon-posts" />
-            </button>
+        {/* Volunteer Opportunities Section */}
+        <div className="section-container">
+          <div className="posts__header">
+            <h1 className="posts__title">Volunteer Opportunities</h1>
+            {isAdmin && (
+              <button
+                className="addpost__button"
+                onClick={() => setShowAddForm((prev) => !prev)}
+                aria-label="Add Post"
+              >
+                <MdAdd className="add-icon-posts" />
+              </button>
+            )}
+          </div>
+          {showAddForm && (
+            <AdminForm
+              onClose={() => setShowAddForm(false)} 
+              onSubmit={handleAddPost} 
+            />
           )}
+          <Cards data={posts} variant="grid" onCardClick={setSelectedItem} />
         </div>
-        {showAddForm && (
-          <AdminForm
-          onClose={() => setShowAddForm(false)} 
-          onSubmit={handleAddPost} 
-        />
-        )}
 
-          <Cards data={posts} variant="grid" onCardClick={handleCardClick} />
+        {/* Tasks Section */}
+        <div className="section-container" style={{ marginTop: '40px' }}>
+          <div className="posts__header">
+            <h1 className="posts__title">My Tasks</h1>
+            {isAdmin && (
+              <button className="addpost__button" aria-label="Add Task">
+                <MdAdd className="add-icon-posts" />
+              </button>
+            )}
+          </div>
+          <Cards data={mockTasks.myTasks} variant="grid" onCardClick={setSelectedItem} />
+        </div>
+        {/* Assigned Tasks Section */}
+  <div className="section-container" style={{ marginTop: '40px' }}>
+    <div className="posts__header">
+      <h1 className="posts__title">Assigned Tasks</h1>
+    </div>
+    <Cards data={mockTasks.assignedTasks} variant="grid" onCardClick={setSelectedItem} />
+  </div>
+
+  {/* Completed Tasks Section */}
+  <div className="section-container" style={{ marginTop: '40px' }}>
+    <div className="posts__header">
+      <h1 className="posts__title">Completed Tasks</h1>
+    </div>
+    <Cards data={mockTasks.completedTasks} variant="grid" onCardClick={setSelectedItem} />
+  </div>
+
+  {/* Pending Tasks Section */}
+  <div className="section-container" style={{ marginTop: '40px' }}>
+    <div className="posts__header">
+      <h1 className="posts__title">Pending Tasks</h1>
+    </div>
+    <Cards data={mockTasks.pendingTasks} variant="grid" onCardClick={setSelectedItem} />
+  </div>
+
+
       </div>
+
       <div className="posts__information">
-        <Description post={selectedPost} />
+        <Description item={selectedItem} /> {/* Changed prop name */}
       </div>
     </div>
   );
