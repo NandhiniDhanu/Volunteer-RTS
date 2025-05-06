@@ -5,12 +5,13 @@ import { assets } from '../../assets/assets';
 import axios from "axios";
 import useAuth from '../../hooks/useAuth';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import TaskDescription from '../../components/TaskDescription/TaskDescription';
 
 const Login = () => {
   const { setAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-
+  const [isTaskDescriptionOpen, setIsTaskDescriptionOpen] = useState(false);
 
   const from = location.state?.from?.pathname || null;
 
@@ -59,6 +60,13 @@ const defaultPath = (roles) => {
 
   return (
     <div className="login-container">
+      <button onClick={() => setIsTaskDescriptionOpen(true)}>
+        Task Description
+      </button>
+      <TaskDescription 
+        isOpen={isTaskDescriptionOpen}
+        onClose={() => setIsTaskDescriptionOpen(false)}
+      />
       <div className="login-form">
         <img src={assets.tamilSchoolIcon} alt="TamilSchoolIcon" className='login-tamil-school-icon' />
         <div className='login-form-title-row'>
